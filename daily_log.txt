@@ -53,3 +53,69 @@ order_items (112,650 rows, one row per item in an order)
 
 6. NEXT (DAY 2)
 - Tables and filters in Excel using the Olist orders data
+
+
+
+
+
+
+
+DAY 2 NOTES (29 Sep 2026)
+
+1. TOPICS LEARNED
+- Tables (Ctrl+T): auto-expanding range, built-in filters, banded rows
+- Sorting: single-column (A-Z button) vs multi-level sort (Data > Sort >
+  Add Level) for "sort by X, then by Y"
+- Filtering: dropdown filters, Date Filters vs Number/Text Filters
+  (depends on whether the column is a real date)
+- Absolute vs relative references: $A$1 stays fixed when copied, A1
+  shifts. Use F4 to toggle. Needed when a formula refers to one fixed
+  cell (like a tax rate) while other parts shift down rows.
+
+2. APPLIED ON orders_practice.xlsx (copy of olist_orders_dataset)
+- Converted to a Table
+- Sorted by order_purchase_timestamp oldest to newest
+- Sorted by order_status (A-Z), then order_purchase_timestamp
+  (newest to oldest) within each status - multi-level sort
+- Filtered order_status: delivered = 97,110, canceled = 627
+
+3. KEY MISTAKE AND FIX (important habit)
+- Used Ctrl+Down while a filter was active - this jumps to the last
+  row of the WHOLE table, not the last VISIBLE row, so it silently
+  ignores the filter and gives a wrong (too-high) count
+- Fix: use a formula instead of reading filtered/sorted views:
+  - COUNTIF(range, "value") - count matching rows directly
+  - COUNTIFS(range1, cond1, range2, cond2) - multiple conditions
+  - COUNTBLANK(range) - count empty cells
+  - SUBTOTAL(103, range) - counts only visible rows if a filter IS
+    active and you want that
+- Habit: cross-check any count against a total or another known
+  number before trusting it. If a "subset" count is suspiciously
+  close to the full total, it's probably wrong.
+
+4. Q1-10 PRACTICE RESULTS (all verified with formulas)
+- Shipped orders: 1,107
+- First 3 order_ids sorted A-Z: 00010242fe8c5a6d1ba2dd792cb16214,
+  00018f77f2f0320c557190d7a144bdd3, 000229ec398224ef6ca0657da4fc703e
+- Orders in 2016: 329
+- Invoiced orders: 314 (none have a delivery date)
+- Blank order_delivered_customer_date: 2,965 total, broken down by
+  status: delivered=8, canceled=619, shipped=1107, invoiced=314,
+  processing=301, approved=2, created=5, unavailable=609
+- Earliest order_approved_at: 15-09-2016 12:16
+- Orders before 01-01-2017: 329 (same as 2016 count, since the
+  dataset starts 04-09-2016 - no earlier data exists)
+- All "processing" orders have blank delivery dates
+- Canceled + unavailable orders combined: 1,234
+- Multi-level sort (status A-Z, then date oldest-newest): "approved"
+  is first alphabetically, earliest date in it is 06-02-2017 20:18
+
+5. DATA QUALITY FINDINGS (worth using in the capstone later)
+- 8 orders marked "delivered" have a blank delivery date - likely a
+  data entry gap
+- 619 orders marked "canceled" also have blank delivery dates, which
+  makes sense (never shipped) but worth stating explicitly
+- order_purchase_timestamp confirmed range: 04-09-2016 to 17-10-2018
+
+6. NEXT (DAY 3)
+- Core Excel formulas: SUM, AVERAGE, MIN, MAX, COUNT, IF, AND, OR
