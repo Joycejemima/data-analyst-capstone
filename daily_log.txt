@@ -119,3 +119,63 @@ DAY 2 NOTES (29 Sep 2026)
 
 6. NEXT (DAY 3)
 - Core Excel formulas: SUM, AVERAGE, MIN, MAX, COUNT, IF, AND, OR
+
+
+DAY 3 NOTES (30 Sep 2026)
+
+1. TOPICS LEARNED
+- SUM, AVERAGE, MIN, MAX, COUNT: basic math/stats on a range
+- COUNT vs COUNTA: COUNT only counts numbers, COUNTA counts any
+  non-blank cell (text included)
+- IF: =IF(condition, value_if_true, value_if_false)
+- AND / OR: combine multiple conditions, used nested inside IF
+  - AND(cond1, cond2): true only if BOTH are true
+  - OR(cond1, cond2): true if AT LEAST ONE is true
+- Formulas typed into an Excel Table column auto-fill down the
+  whole column automatically (no need to copy/drag)
+
+2. APPLIED ON orders_practice.xlsx
+- Built delay_days column (I): =IF(G2="","Not delivered",G2-H2)
+  comparing order_delivered_customer_date vs
+  order_estimated_delivery_date
+  - Positive = delivered late, negative = delivered early,
+    "Not delivered" = no delivery date yet
+- Results: average delay -11.18 days, 7,827 late, 88,649
+  early/on-time, 2,965 not delivered
+- Built is_late column (J) and long_delay column (K, >7 days late
+  AND status=delivered) using nested IFs
+
+3. KEY BUG FOUND (important Excel quirk)
+- IF(I2>0,...) on a column with mixed text/numbers gave wrong
+  results: Excel treats ANY text as "greater than" any number, so
+  "Not delivered" > 0 evaluated to TRUE, wrongly marking undelivered
+  orders as "late"
+- Fix: check for the text case FIRST with a nested IF:
+  =IF(I2="Not delivered","No",IF(I2>0,"Yes","No"))
+- Lesson: when a column mixes text and numbers, always guard against
+  the text case before doing a numeric comparison
+
+4. Q1-10 PRACTICE RESULTS (all verified)
+- Numeric values in delay_days (COUNT): 96,476
+- Non-blank cells in delay_days (COUNTA): 99,441 (includes the
+  "Not delivered" text rows)
+- MAX delay_days: 189 days late (outlier, worth flagging)
+- MIN delay_days: -146 days early (outlier, worth flagging)
+- is_late = "Yes" count: 7,827 (matches delay_days > 0 count exactly)
+- long_delay = "Review" count (>7 days late AND delivered): 3,353
+- AVERAGEIF on canceled orders returned #DIV/0!, because canceled
+  orders are always "Not delivered" (text), so there's nothing
+  numeric to average - a correct result, not an error to fix
+
+5. SUMMARY INSIGHT
+- Olist delivers early or on-time ~89% of the time (88,649/99,441),
+  average delay -11 days
+- ~8% of orders are late (7,827/99,441)
+- ~3% (2,965) never got a delivery date at all (canceled, shipped,
+  invoiced, etc.), so no delay could be calculated for them
+- Two outliers worth investigating later: a 189-day-late order and
+  a 146-day-early order, possibly data errors
+
+6. NEXT (DAY 4)
+- Conditional sums: COUNTIFS, SUMIFS, AVERAGEIFS
+- Revenue by state and category
