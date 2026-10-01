@@ -179,3 +179,57 @@ DAY 3 NOTES (30 Sep 2026)
 6. NEXT (DAY 4)
 - Conditional sums: COUNTIFS, SUMIFS, AVERAGEIFS
 - Revenue by state and category
+
+
+
+
+
+DAY 4 NOTES (01 Oct 2026)
+
+1. TOPICS LEARNED
+- COUNTIFS: count rows matching multiple conditions
+  =COUNTIFS(range1, cond1, range2, cond2, ...)
+- SUMIFS: sum a range where multiple conditions are met - sum range
+  comes FIRST, before any condition pairs
+  =SUMIFS(sum_range, range1, cond1, range2, cond2, ...)
+- AVERAGEIFS: same shape as SUMIFS, but averages instead of summing
+- All condition ranges must be the same size as each other and as
+  the sum/average range, a mismatch is a common error
+- A single range can take two conditions at once (e.g. ">=50" and
+  "<=100" on the same column) to build a "between" check
+- FORMULATEXT(cell): shows another cell's formula as text, useful
+  for keeping a readable record of answer + formula side by side
+
+2. APPLIED ON order_items_practice.xlsx (copy of order_items)
+- Total revenue (price): 13,591,643.70
+- Revenue from first item in each order only (order_item_id=1):
+  12,428,396.31
+- Items with freight_value > 50: 4,605
+- Avg price when freight > 50: 382.63; when freight < 50: 109.48
+- Two-condition SUMIFS (order_item_id=1 AND price>100): 9,211,824.18
+
+3. Q1-5 PRACTICE RESULTS (all verified)
+- Total freight_value: 2,251,909.54 (about 16.6% of total price)
+- Items priced 50-100 (inclusive, "between" with two conditions on
+  one column): 33,313
+- Avg freight_value where order_item_id > 1 (not the first item):
+  18.50 - much lower than the price-based freight averages, since
+  additional items in an order tend to be smaller add-ons
+- Items with price > 200 AND freight_value < 20: 5,264 - expensive
+  but cheap to ship, likely small/light high-value goods (jewelry,
+  electronics accessories, etc.)
+- Insight: freight tracks with price on average (382.63 vs 109.48
+  depending on freight level), but it's not a strict rule - 5,264
+  items break the pattern, showing freight depends more on a
+  product's size/weight than its price
+
+4. NOTE
+- Tracker's "revenue by state and category" task needs data from
+  3 files (order_items, customers, products) joined together -
+  not possible yet without XLOOKUP/Power Query, so deferred to
+  Day 5 (XLOOKUP) and Week 2 (Power Query)
+
+5. NEXT (DAY 5)
+- Lookups: XLOOKUP, INDEX-MATCH
+- Join order_items to customers and products, enabling the
+  deferred "revenue by state and category" question
