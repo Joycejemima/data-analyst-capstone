@@ -233,3 +233,80 @@ DAY 4 NOTES (01 Oct 2026)
 - Lookups: XLOOKUP, INDEX-MATCH
 - Join order_items to customers and products, enabling the
   deferred "revenue by state and category" question
+
+
+
+
+
+DAY 5 NOTES (02 Oct 2026)
+
+1. TOPICS LEARNED
+- XLOOKUP: not available on this laptop (#NAME? error means the
+  Excel version doesn't have it - needs Microsoft 365/2021/2024).
+  Free workaround: Excel for the web (office.com) always has it.
+- INDEX-MATCH: used instead, works in every Excel version, does the
+  same job as XLOOKUP in two steps:
+  - MATCH(lookup_value, lookup_range, 0) finds a POSITION (a row
+    number), not a value. The 0 means exact match.
+  - INDEX(return_range, row_number) returns the value sitting at
+    a given position
+  - Combined: =INDEX(return_range, MATCH(lookup_value, lookup_range, 0))
+  - Practiced first on a small 5-row sample table before using it
+    on real data
+- VLOOKUP pitfalls (good to know, not using it going forward):
+  - Can only look to the RIGHT of its search column
+  - Uses column NUMBERS, so inserting/reordering columns silently
+    breaks it (wrong answer, no error)
+  - Easy to forget the exact-match argument (FALSE), defaults to
+    an approximate match that looks right but isn't
+  - Slower on large datasets than INDEX-MATCH/XLOOKUP
+- Cross-file formulas: INDEX-MATCH can reference a different open
+  workbook, e.g. '[customers_practice.xlsx]Sheet1'!$E:$E - but this
+  is fragile, breaks if the file is moved/renamed. Power Query
+  (Week 2) solves this properly with a saved, repeatable connection.
+
+2. APPLIED: joined customers onto orders
+- Added customer_state column to orders_practice.xlsx by looking up
+  customer_id against customers_practice.xlsx (olist_customers_dataset)
+- Columns in customers file: A=customer_id, B=customer_unique_id,
+  C=customer_zip_code_prefix, D=customer_city, E=customer_state
+
+3. BUGS FOUND AND FIXED
+- Bug 1: searched column B (customer_unique_id) instead of column A
+  (customer_id) for the MATCH - every row returned #N/A since the
+  IDs didn't match the wrong column. Fixed by correcting the MATCH
+  range to $A:$A.
+  Lesson: #N/A means "ran fine, found no match" - check you're
+  matching the right ID column, not assuming the formula is broken.
+- Bug 2: SP and RJ order counts both returned 41,746 (identical) -
+  turned out one COUNTIF formula still referenced row 6's cell
+  instead of being updated for RJ. Same class of bug as Day 2
+  (shipped/delivered) and Day 4 (late/early counts) - a copied
+  formula not fully updated. Third time catching this pattern.
+  Lesson: if two different formulas give an identical result,
+  check the exact formula text in the formula bar before trusting
+  either number.
+
+4. VERIFICATION
+- Cross-checked the join with COUNTIF for #N/A (0 errors) and by
+  manually looking up one customer_id by eye
+- Cross-checked SP's order count two ways: COUNTIF (41,746) and a
+  PivotTable (customer_state in Rows, order_id Count in Values,
+  sorted descending) - both gave 41,746, confirming the method
+
+5. Q1-5 RESULTS (SP vs RJ)
+- Orders from SP: 41,746 (verified two ways)
+- Orders from RJ: 12,852
+- Average delay_days, SP: -10.38
+- Average delay_days, RJ: -11.06 (more negative = delivers slightly
+  EARLIER than SP, not "worse")
+- Insight: SP has far more orders (41,746 vs 12,852), but RJ
+  actually delivers slightly earlier on average, showing fewer
+  orders doesn't mean worse delivery performance
+
+6. NEXT (DAY 6, Week 1 checkpoint)
+- Text and date functions: LEFT, MID, TRIM, TEXT, DATE, YEAR, MONTH,
+  DATEDIF
+- Apply: clean city names, extract the order month
+- Practice: timed test, 15 formulas from memory
+- This is the last day of Week 1
