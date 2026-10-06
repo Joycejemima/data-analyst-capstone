@@ -1,0 +1,61 @@
+# Data Quality Checklist
+
+A set of checks to run on any new dataset before trusting it for analysis. Based on real issues hit during Week 1 of the capstone project.
+
+## 1. Structure
+- [ ] Open the file and read the column headers.
+- [ ] Look at 5-10 sample rows and answer: what does one row represent?
+      (An order? A customer? A single item within an order?)
+- [ ] Note the row count (Ctrl+Down, or COUNTA) and roughly how many columns there are.
+
+## 2. Keys
+- [ ] Test each likely ID column with Remove Duplicates (or COUNTIF) to see
+      if it's unique on its own.
+- [ ] If every column has duplicates, try combining two columns (a composite
+      key) and test that combination for duplicates instead.
+- [ ] This matters because joins and lookups depend on keys being correct.
+      A wrong or misunderstood key leads to a wrong join (see the #N/A bug
+      from Day 5, caused by matching against the wrong ID column).
+
+## 3. Missing values
+- [ ] Check each column for blanks (COUNTBLANK).
+- [ ] For each one with blanks, ask: does blank mean something real (like
+      "not delivered yet"), or is it actually missing/bad data?
+- [ ] Decide whether to leave it blank, fill it with a clear label (like
+      "Not delivered"), or investigate further before using the column.
+
+## 4. Text consistency
+- [ ] Open the filter dropdown on each text column and scan the list for
+      near-duplicate values (extra spaces, inconsistent capitalization,
+      like "SP" vs "SP ").
+- [ ] Use TRIM() and PROPER() to fix these, not Find and Replace, since
+      Find and Replace is blunter and can break text with intentional
+      spaces (e.g. turning "Rio de Janeiro" into "RiodeJaneiro").
+
+## 5. Dates and numbers
+- [ ] Click a cell in the column and check its alignment: numbers and
+      dates are right-aligned by default, text is left-aligned.
+- [ ] Check the Number Format box (Home tab): it should say "Date" or
+      "Custom" with a date pattern, not "General" or "Text".
+- [ ] Open the filter dropdown: a real date column groups values by year
+      with expandable "+" signs and offers Date Filters. A text column
+      pretending to be a date won't group this way and only offers Text
+      Filters.
+- [ ] Cross-check with a formula (MIN/MAX or COUNTIF) rather than trusting
+      the filtered view alone, and double-check the column letter is
+      actually correct (a wrong range gave a false MIN/MAX of 0 on Day 2).
+
+## 6. Outliers
+- [ ] Use MAX and MIN on numeric columns to find the most extreme values
+      at both ends.
+- [ ] Compare extreme values against the AVERAGE to judge how unusual they
+      really are.
+- [ ] Flag anything that looks impossible or extreme for a note (e.g. a
+      189-day delivery delay, or a 146-day-early delivery found on Day 3),
+      rather than ignoring it or deleting it outright.
+
+## General habit
+- [ ] Cross-check any number that looks suspiciously close to (or
+      identical to) another number, rather than trusting it at face value.
+      This pattern (a copied formula not fully updated, a filter result
+      that didn't actually filter) came up repeatedly in Week 1.

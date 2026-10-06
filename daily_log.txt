@@ -424,3 +424,24 @@ NEXT: WEEK 2 - Excel advanced
   this replaces the fragile cross-file INDEX-MATCH links used this
   week
 - Building a one-page Excel dashboards
+
+
+
+
+
+
+DAY 7 NOTES (Week 2 begins)
+
+1. TOPICS LEARNED
+- Remove Duplicates: reviewed, checking ALL columns (not just one)
+  to confirm a table has no fully duplicate rows
+- Data Validation: restricts what can be typed into a cell (e.g. a
+  dropdown list of allowed values). More useful for forms/data entry
+  than for cleaning data that already exists, since it prevents
+  messiness at the source instead of fixing it after the fact
+- Find and Replace (Ctrl+H): exact, deliberate text swaps across a
+  selection or whole sheet. Blunt - doesn't distinguish a stray
+  space from a meaningful one, so it's not the right tool for
+  whitespace cleanup (TRIM() is safer for that)
+- Text to Columns: splits one column into several based on a
+  delimiter (comma, space) or fixed width. Overwrites
