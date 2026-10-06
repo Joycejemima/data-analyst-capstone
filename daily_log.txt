@@ -310,3 +310,117 @@ DAY 5 NOTES (02 Oct 2026)
 - Apply: clean city names, extract the order month
 - Practice: timed test, 15 formulas from memory
 - This is the last day of Week 1
+
+
+DAY 6 NOTES (Week 1 checkpoint)
+
+1. TOPICS LEARNED
+- Text functions: LEFT, MID, TRIM, PROPER (not in original list, used
+  for city name cleaning: PROPER(TRIM(text)) fixes extra spaces and
+  inconsistent capitalization)
+- TEXT(value, format): converts a number/date to formatted text,
+  e.g. TEXT(A1,"mmm-yyyy") -> "Oct-2026"
+- Date functions: DATE(year,month,day), YEAR(), MONTH()
+- DATEDIF: difference between two dates in a chosen unit (d/m/y) -
+  a more flexible version of the manual subtraction used for
+  delay_days back on Day 3
+
+2. APPLIED
+- Part A: cleaned customer_city with =PROPER(TRIM(D2)) on
+  customers_practice.xlsx - fixed extra spaces and inconsistent
+  capitalization successfully
+- Part B: added order_month column to orders_practice.xlsx with
+  =TEXT(D2,"mmm-yyyy"), inserted as a new column in the MIDDLE of
+  the table (between order_purchase_timestamp and order_approved_at)
+- Built a Pivot Table: order_month in Rows, Count of order_id in
+  Values, sorted descending
+- Finding: Nov-2017 was the busiest month (7,544 orders) - lines up
+  with Black Friday season in Brazil, a real business-driven spike,
+  not a random outlier
+
+3. BUG FOUND: stale Pivot Table cache
+- order_month didn't show up in the Pivot Table Field List, even
+  after refreshing and even in a brand-new Pivot Table
+- Cause: when a column is inserted in the MIDDLE of a Table (not
+  added at the end), Excel can reuse an old, stale Pivot Cache
+  instead of rebuilding one from the table's current columns - a
+  known Excel quirk
+- Fix: delete every existing Pivot Table (all sheets holding one),
+  save, fully close and reopen Excel (clears the in-memory cache
+  too), then insert a completely fresh Pivot Table
+- Lesson: a Pivot Table's field list can lag behind real data even
+  after a manual refresh - if a column is missing, the cache itself
+  (not the data) is the first thing to suspect, especially for
+  mid-table column insertions
+
+4. TASK 3: WEEK 1 CHECKPOINT (timed test, no notes)
+- 13/15 correct on first pass, no reference material used
+- Needed a second pass on:
+  - A full IF needs all three parts (condition, true value, false
+    value) - leaving out the false value returns a bare FALSE
+    instead of a meaningful label
+  - Absolute references: to lock one fixed cell (like a tax rate)
+    while another shifts down each row, e.g. =D2*$F$1 - D2 shifts
+    when copied down, $F$1 stays locked. F4 cycles a reference
+    through A1 -> $A$1 -> A$1 -> $A1
+- Everything else (SUM, COUNT, COUNTA, MAX, MIN, IF, COUNTIF,
+  SUMIF structure, INDEX-MATCH shape, YEAR, TEXT for date format,
+  COUNTBLANK) was correct without help
+
+===========================================
+WEEK 1 SUMMARY (Excel basics -> advanced-ish)
+===========================================
+BUILT
+- data-analyst-capstone repo set up and pushed throughout the week
+- budget_practice.xlsx (Day 1): formatted table, frozen header, SUM
+- orders_practice.xlsx: sorting, filtering, delay_days, is_late,
+  long_delay, order_month, customer_state (joined from customers)
+- customers_practice.xlsx: city_clean column
+- order_items_practice.xlsx: price/freight analysis with SUMIFS/
+  AVERAGEIFS
+- Pivot Tables for state-level and month-level order counts
+
+KEY INSIGHTS FOUND (useful for the capstone later)
+- 99,441 orders from 96,096 unique customers; only ~3% repeat orders
+- Olist delivers early/on-time ~89% of the time, avg delay -11 days;
+  ~8% late, ~3% never got a delivery date at all
+- Outliers: one order 189 days late, one 146 days early - worth
+  flagging as possible data errors
+- SP has far more orders than any other state (41,746 vs RJ's
+  12,852), but RJ delivers slightly earlier on average
+- Price and freight are loosely correlated (382.63 vs 109.48 avg
+  price by freight level) but not strictly - 5,264 items are
+  expensive but cheap to ship
+- Nov-2017 was the peak order month (7,544), consistent with
+  Black Friday seasonality
+- Data quality notes: 8 "delivered" orders with no delivery date;
+  619 "canceled" orders also missing one (expected, since they
+  never shipped)
+
+RECURRING BUG PATTERN TO WATCH FOR GOING FORWARD
+- Copied/dragged formulas not fully updated to the new row or
+  condition (caught 3 times: shipped/delivered counts, late/early
+  counts, SP/RJ counts) - always check the exact formula text in
+  the formula bar if two different formulas give an identical result
+- Ctrl+Down after filtering jumps to the last row of the WHOLE
+  table, not the last VISIBLE row - use COUNTIF/COUNTIFS/SUBTOTAL
+  instead of trusting a filtered view
+- Excel treats ANY text as "greater than" any number in a
+  comparison (e.g. "Not delivered" > 0 is TRUE) - guard mixed
+  text/number columns with a nested IF that checks for the text
+  case first
+- A Pivot Table's field list can lag behind the real data due to a
+  stale cache, especially after inserting a column mid-table -
+  delete and rebuild the Pivot Table if a column won't appear
+- General habit: cross-check any number that looks suspiciously
+  close to (or identical to) another number, rather than trusting
+  it at face value
+
+NEXT: WEEK 2 - Excel advanced
+- Data cleaning: remove duplicates, data validation, Find and
+  Replace, Text to Columns
+- PivotTables (deeper), charts and slicers
+- Power Query: a proper, repeatable way to clean and merge data -
+  this replaces the fragile cross-file INDEX-MATCH links used this
+  week
+- Building a one-page Excel dashboards
