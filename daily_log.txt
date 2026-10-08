@@ -445,3 +445,115 @@ DAY 7 NOTES (Week 2 begins)
   whitespace cleanup (TRIM() is safer for that)
 - Text to Columns: splits one column into several based on a
   delimiter (comma, space) or fixed width. Overwrites
+
+
+
+DAY 8 NOTES (Week 2): PivotTables
+
+1. TOPICS LEARNED
+- The four Field List boxes: Rows (listed down the side), Columns
+  (spread across the top, makes a grid), Filters (a dropdown above
+  the pivot that narrows everything without touching the data
+  table), Values (what gets calculated)
+- Value Field Settings: change Count/Sum to Average, Max, Min, etc.
+- Show Values As > % of Row Total: turns counts into shares that add
+  up to 100% per row, which makes states of different sizes
+  comparable
+- Value Filters > Top 10: keeps only the highest N rows by a value
+- Date grouping (right-click a date > Group): grouping
+  order_purchase_timestamp on the 99,441-row orders file froze Excel.
+  Used a helper column instead: month_start =
+  DATE(YEAR(E2),MONTH(E2),1), formatted mmm-yyyy. It holds a real
+  date, so months sort in calendar order (a TEXT() month sorts
+  alphabetically). Still to try: the Group feature on a lighter file.
+
+2. PIVOTS BUILT AND VERIFIED
+- Orders by order_status (Grand Total 99,441):
+  delivered 96,478 | shipped 1,107 | canceled 625 | unavailable 609
+  invoiced 314 | processing 301 | created 5 | approved 2
+- Delivered by state: SP delivered = 40,501 (about 97% of SP's
+  41,746 orders, same as the overall delivered share)
+- Late orders by state (Columns = is_late, % of Row Total):
+  overall 7.87%. Highest: AL 23%, MA 19%, PI 15%. SP 6%. RO 3%.
+  Order counts: AL 413, RO 253.
+- Revenue by month (order_items, month from shipping_limit_date):
+  Grand Total 13,591,643.70 (matches Day 4). Highest month:
+  May-2018, 1,084,358.55 (about 8% of total).
+- Top 10 products by revenue: 450,770.75 (about 3.3% of total).
+  Top product bb50f2e236e5eea0100680137654686c: 63,885.
+
+3. PIVOT SUMMARIES (Task 3)
+- Pivot 1: 96,478 of 99,441 orders (97.02%) were delivered. The
+  other ~3% mixes failed orders (canceled, unavailable) with orders
+  that hadn't completed (shipped, invoiced, processing...).
+- Pivot 2: 23% of AL orders arrived late vs 3% in RO. AL is far
+  above the 7.87% overall rate and RO well below it. Both are small
+  states, so percentages can swing, but the gap is big. Late
+  deliveries depend heavily on which state the customer lives in.
+- Pivot 3: May-2018 was the top revenue month (1,084,358.55). Month
+  is based on shipping_limit_date (the seller's deadline), not the
+  purchase date, so it can differ from the order-count peak
+  (Nov-2017, by purchase date).
+- Pivot 4: revenue is spread across many products. The top product
+  is under 0.5% of revenue and the top 10 are only about 3.3%.
+
+
+Pivot 1 (orders by order_status): 96,478 of 99,441 orders, about 97.02%,
+were delivered. The remaining ~3% is a mix of failed orders (canceled,
+unavailable) and orders that hadn't completed yet. So Olist delivers about
+97% of orders.
+
+Pivot 2 (late orders by customer_state): 23% of orders in AL arrived late,
+compared with 3% in RO. AL is far above the overall late rate of 7.87%,
+and RO is well below it. AL had 413 orders and RO had 253, so these
+percentages can swing more than a large state's, but the gap is still big.
+This means late deliveries depend heavily on which state the customer
+lives in, so Olist could look more closely at high-late states like AL.
+
+Pivot 3 (revenue by month_start): The pivot shows revenue by month
+(based on shipping_limit_date, not the purchase date). May-2018 was the
+highest month at 1,084,358.55, about 8% of total revenue of
+13,591,643.70, and revenue grew over the period. This means Olist's sales
+were rising across the data, with May-2018 as its strongest month.
+
+Pivot 4 (top 10 products by revenue): The top product,
+bb50f2e236e5eea0100680137654686c, made 63,885, and the top 10 products
+together made 450,770.75, about 3.3% of total revenue (13,591,643.70).
+This means Olist's revenue is spread across many products rather than
+resting on a few stars. The top product alone is under 0.5% of revenue,
+so losing any single product would barely change the total.
+
+
+4. CORRECTIONS TO EARLIER NOTES
+- Day 2: delivered = 96,478 (not 97,110) and canceled = 625 (not
+  627). The old numbers came from reading a filtered view. The
+  pivot counts rows directly. All eight statuses now add up to
+  99,441.
+- The customer_state column in orders_practice.xlsx broke after I
+  added city_clean to customers_practice.xlsx. That insert pushed
+  customer_state from column E to F, but the lookup still pointed
+  at column E and returned city names. Fixed by changing $E:$E to
+  $F:$F. Day 5 results (SP 41,746, RJ 12,852) were calculated before
+  the shift and are still correct.
+- TO DO: orders_clean.xlsx was copied from orders_practice before
+  the fix, so it has the same wrong customer_state formula.
+
+5. LESSONS
+- Compare states with percentages, not counts: the biggest state
+  always has the biggest count of late orders. SP has the most late
+  orders but a below-average late rate (6%).
+- is_late Yes/No means late / not late, not delivered / not
+  delivered.
+- Describe what a pivot shows, not why. AL, MA and PI are far from
+  the SP hub, but RO is also remote and has only 3% late, so
+  distance alone can't explain the gaps.
+- Check each pivot's Grand Total against a number you already
+  verified (99,441 orders, 13,591,643.70 revenue).
+- Inserting a column in one file can break lookups in another file
+  that point at the old column letters.
+- The 7.87% overall late rate counts undelivered orders as "not
+  late". Among delivered orders only, it is about 8.1%.
+
+6. NEXT (DAY 9)
+- Charts and slicers: chart types, slicers, timelines, PivotCharts
+- Build 4 charts with clear titles
