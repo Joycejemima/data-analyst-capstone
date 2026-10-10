@@ -607,3 +607,55 @@ DAY 9 NOTES (Week 2): Charts and slicers
 - Power Query: import, data types, merge, append, applied steps
 - It replaces the fragile cross-file INDEX-MATCH link with a saved,
   repeatable connection
+
+
+
+
+DAY 10 NOTES (Week 2): Slicers, timelines and Power Query
+
+1. WARM-UP (finishing Day 9)
+- Slicer on order_item_id = 1: Grand Total 12,428,396.31, matches the
+  Day 4 SUMIFS. A slicer is a click-based filter on a pivot.
+- Timeline on month_start, Jan-2018 to Jun-2018: 5,474,856.43 (about
+  40% of total revenue), with May-2018 (1,084,358.55) inside the range.
+- Chart-type answers: status counts = column chart, average delay by
+  month = line (change over time), price vs freight = scatter, delivered
+  vs not = pie (2 slices, about 97% and 3%).
+
+2. POWER QUERY
+- Records the cleaning as a list of Applied Steps that can be replayed
+  on fresh data. Never changes the original CSV.
+- Data types: each column has a type icon (ABC text, 123 number, calendar
+  date). zip_code_prefix should be text, since zip codes are labels and
+  numbers drop leading zeros.
+- Customers cleaning steps: Source, Promoted Headers, Changed Type,
+  Trimmed Text, Capitalized Each Word. Same job as =PROPER(TRIM()) but
+  stored as steps, with no helper column.
+- Merge = joins two tables on a key (replaces INDEX-MATCH). Left Outer
+  keeps every row of orders. Append = stacks one table under another.
+- Power Query finds columns by NAME, not by letter, so adding a column to
+  the customers file can't break the join like it did on Day 8.
+
+3. APPLIED
+- Built orders + customers merge on customer_id, expanded customer_state
+- Added delay_days (null for undelivered) and is_late as custom columns
+- Loaded orders to a table, customers as connection only
+- Saved as excel/orders_powerquery.xlsx
+- Results: rows loaded = FILL IN | SP = FILL IN | late = FILL IN |
+  average delay = FILL IN
+
+4. REFRESH TEST
+- Pointed the source at a 500-row copy (orders_test.csv): table became
+  FILL IN rows, all steps still ran. Switched back: FILL IN rows.
+- Lesson: change the source, not the formulas.
+
+5. STILL OPEN
+- Chart 4 (late % by state) was parked. It can be rebuilt from the
+  Power Query table.
+- orders_clean.xlsx still has the old customer_state formula pointing at
+  the wrong column ($E:$E instead of $F:$F).
+- orders_practice.xlsx may still be on Manual calculation. Set
+  Formulas > Calculation Options > Automatic when you next open it.
+
+6. NEXT (DAY 11)
+- Rebuild the one-page Excel dashboard using the Power Query table
