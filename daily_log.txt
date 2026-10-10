@@ -557,3 +557,53 @@ so losing any single product would barely change the total.
 6. NEXT (DAY 9)
 - Charts and slicers: chart types, slicers, timelines, PivotCharts
 - Build 4 charts with clear titles
+
+
+
+DAY 9 NOTES (Week 2): Charts and slicers
+
+1. TOPICS LEARNED
+- Chart types by question: column/bar to compare categories, line for
+  change over time, pie only for a few slices (parts of a whole),
+  scatter for the relationship between two numbers
+- PivotChart: a chart attached to a pivot, it changes whenever the
+  pivot changes, so each chart gets its own pivot
+- Slicers: clickable buttons that filter a pivot or chart
+- Timelines: a slicer built for dates
+
+2. CHARTS BUILT AND VERIFIED
+- Chart 1, revenue by month (line, order_items_practice.xlsx):
+  peaks at May-2018, about 1.08M
+- Chart 2, top 10 products (bar): longest bar is bb50f2e..., 63,885.
+  Excel draws the first item at the bottom, fixed with Format Axis >
+  Categories in reverse order
+- Chart 3, orders by customer_state (column, orders_practice.xlsx):
+  SP 41,746, RJ 12,852, MG 11,635
+- Chart 4, late orders by state: NOT FINISHED, parked (see below)
+
+3. CLUTTER REMOVED FROM CHART 2
+- Removed gridlines, legend and field buttons, added data labels
+- Title now states the finding: "Top 10 products earn only about 3%
+  of revenue"
+- Lesson: every element on a chart should earn its place, and a title
+  that says the finding is better than a title that names the data
+
+4. CHART 4 PROBLEMS (come back to this)
+- Hiding the No column in a pivot set to % of Row Total made Yes show
+  100% for every state. The percentage is recalculated using only the
+  visible columns, so keep both No and Yes showing
+- Sorting by one pivot column failed, and sorting the pasted copy gave
+  wrong values: the percentages were sorted on their own, so they
+  ended up next to the wrong states. SP showed 24% instead of about 6%.
+  Always click one cell inside the table so Excel sorts the whole table
+  together, and delete the Grand Total row first
+- Sanity check that caught it: the numbers didn't match the verified
+  figures (SP 6%, AL 23%), so I stopped before charting them
+- The pivot itself was correct. Overall late rate among delivered
+  orders is about 8.1% (7,827 of 96,478), not 7.87%, because the 7.87%
+  includes undelivered orders in the base
+
+5. NEXT (DAY 10)
+- Power Query: import, data types, merge, append, applied steps
+- It replaces the fragile cross-file INDEX-MATCH link with a saved,
+  repeatable connection
