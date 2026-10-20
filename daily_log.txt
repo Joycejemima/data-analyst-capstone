@@ -659,3 +659,42 @@ DAY 10 NOTES (Week 2): Slicers, timelines and Power Query
 
 6. NEXT (DAY 11)
 - Rebuild the one-page Excel dashboard using the Power Query table
+
+
+DAY 11 – One-page dashboard (Mon/Tue 19–20 Oct 2026)
+
+WHAT I BUILT
+Olist delivery performance dashboard in Excel: 4 KPI cards, 4 pivot charts, 2 slicers.
+
+LAYOUT RULES
+- Order: title > KPI cards > charts > slicers > footnote
+- Fits on one screen, no scrolling
+- One main colour (teal) for normal things, orange only for "late"
+- Chart titles say what the chart shows (never "Total" or "Chart Title")
+- Readable labels (Jan-17, not 01-01-2017)
+
+KPI FORMULAS
+- Total orders  = COUNTA(orders[order_id])           -> 99,441
+- Delivered %   = AVERAGE(orders[delivered_flag])    -> 97.0%
+- Late rate     = AVERAGE(orders[late_flag])         -> 8.1% (of delivered; blanks ignored)
+- Avg delay     = AVERAGE(orders[delay_days])        -> -11.2 days (early vs promised)
+Key trick: the average of a 0/1 column = a percentage.
+
+SLICERS
+- A slicer only filters the pivots it is connected to (Report Connections).
+- KPI cards are plain formulas, so slicers don't change them. Note this on the dashboard.
+
+DATA TRAPS
+- Partial months (Sep-Dec 2016, Sep-Oct 2018) have very few orders, so rates jump around.
+  Sep 2016 shows 100% late from 1 delivered order.
+- Missing months (Nov 2016) make a chart look continuous when it isn't.
+- Filter the edge months out and say so in the footnote.
+
+FINDINGS (all orders)
+- 8.1% of delivered orders arrive late
+- Late rate rose: 1.5% (2016), 6.6% (2017), 9.4% (2018)
+- Late spikes: Nov 2017 (14%), Feb 2018 (16%), Mar 2018 (21%)
+- SP, RJ and MG = 66.6% of orders
+- AL has the highest late rate of any state (23.9%)
+
+NEXT: Day 12 – Excel checkpoint
