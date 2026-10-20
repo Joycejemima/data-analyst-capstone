@@ -698,3 +698,29 @@ FINDINGS (all orders)
 - AL has the highest late rate of any state (23.9%)
 
 NEXT: Day 12 – Excel checkpoint
+
+
+
+DAY 12 – Excel checkpoint (20 Oct 2026)
+
+# Excel dashboard: 5 insights (Olist, 2016–2018)
+
+1. 8.1% of delivered orders arrive late (7,827 of 96,476 delivered orders with a delivery date), although orders arrive 11.2 days earlier than promised on average.
+2. The late rate is rising by year: 1.5% (2016, only 329 orders), 6.6% (2017), 9.4% (2018).
+3. Late-rate spikes: Nov 2017 (14.3%), Feb 2018 (16.0%) and Mar 2018 (21.4%). Mar 2018 also had the most late orders of any month (1,496).
+4. Three states, SP, RJ and MG, place 66.6% of all orders (66,233 of 99,441).
+5. Alagoas (AL) has the highest late rate of any state (23.9%), followed by Maranhão (MA, 19.7%). Rondônia (RO) has the lowest (2.9%).
+
+Notes: monthly charts exclude Sep–Dec 2016 and Sep–Oct 2018 (too few orders). Late rate uses delivered orders only.
+
+
+Score: 11.25 / 15 – PASS
+Strong: COUNT/COUNTA/COUNTIF, flag averages, dashboard rules, COUNTIFS, pivot answers
+Review:
+- % of Grand Total vs % of Row Total (row total gives 100% per row)
+- Sum of 0/1 flag = number of 1s; Count = number of rows
+- New column missing from pivot: stale cache / old copy / source range
+- Fixed column refs break after inserting columns; use XLOOKUP/INDEX-MATCH
+- SP, RJ, MG, AL are states, not cities; 1.5% to 9.4% is by year, not month
+Done: Day 11 pushed, orders_clean formula fixed, calc mode set to Automatic
+NEXT: Day 13
